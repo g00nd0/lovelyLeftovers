@@ -141,7 +141,11 @@ router.put("/addtorlist", (req, res) => {
 router.put("/addtoclist", (req, res) => {
   User.findByIdAndUpdate(
     req.body.userID, // alternative:  (req.session.currentUser)._id or req.params.id
+<<<<<<< HEAD
     { $push: { contributionList: req.body.batchID } }, // req.body, // what to update:
+=======
+    { $push: { contributedList: req.body.batchID } }, // req.body, // what to update:
+>>>>>>> 795d88ce860e4e5d8648ac9cf864653bbb0e701b
     { upsert: true, new: true },
     (error, updatedUser) => {
       if (error) {
@@ -172,15 +176,33 @@ router.get("/:id", (req, res) => {
 //POST new user creation to /user
 router.post(
   "/",
-  // body("firstName", "Please enter your first name.").trim().notEmpty(),
-  // body("familyName", "Please enter your last name.").trim().notEmpty(),
-  // body("organisation").optional().trim().isString(),
-  // body("contactNum", "Please enter a valid 8-digit contact number.").isNumeric().isInt({ gt: 10000000, lt: 99999999 }),
-  // body("email", "Please enter a valid email address").isEmail(),
-  // body("username", "Username has to be at least 8 alphanumeric characters long.").trim().isLength({ min: 8 }),
-  // body("password", "Password has to be at least 8 alphanumeric characters long.").trim().isLength({ min: 8 }).isAlphanumeric(),
-  // body("type", `Choose between "Contributor", "Recipient" and "Admin"`).trim().isIn(["Contributor", "Recipient", "Admin"]),
-  // body("status", `Only "Active" or "Inactive"`).optional().trim().isIn(["Active", "Inactive"]),
+  body("firstName", "Please enter your first name.").trim().notEmpty(),
+  body("familyName", "Please enter your last name.").trim().notEmpty(),
+  body("organisation").optional().trim().isString(),
+  body("contactNum", "Please enter a valid 8-digit contact number.")
+    .isNumeric()
+    .isInt({ gt: 10000000, lt: 99999999 }),
+  body("email", "Please enter a valid email address").isEmail(),
+  body(
+    "username",
+    "Username has to be at least 8 alphanumeric characters long."
+  )
+    .trim()
+    .isLength({ min: 8 }),
+  body(
+    "password",
+    "Password has to be at least 8 alphanumeric characters long."
+  )
+    .trim()
+    .isLength({ min: 8 })
+    .isAlphanumeric(),
+  body("type", `Choose between "Contributor", "Recipient" and "Admin"`)
+    .trim()
+    .isIn(["Contributor", "Recipient", "Admin"]),
+  body("status", `Only "Active" or "Inactive"`)
+    .optional()
+    .trim()
+    .isIn(["Active", "Inactive"]),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
