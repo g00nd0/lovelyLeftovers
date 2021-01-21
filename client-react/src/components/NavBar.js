@@ -11,7 +11,7 @@ const NavBar = (props) => {
 
   const ShowStatus = () => {
     const { status } = useUser();
-    if (status) {
+    if (status && userType) {
       return (
         <>
           <Button
