@@ -11,13 +11,14 @@ const NavBar = (props) => {
 
   const ShowStatus = () => {
     const { status } = useUser();
-    if (status && userType) {
+    if (!status || userType === null) {
       return (
         <>
           <Button
             href="/login"
             size="md"
             style={{ margin: "1px 2px", width: "90px" }}
+            onClick={() => console.log("yes it works")}
           >
             Login
           </Button>
@@ -46,7 +47,14 @@ const NavBar = (props) => {
     const dispatch = useDispatch();
     return (
       <>
-        <button onClick={() => dispatch({ type: "logged in" })}>log in</button>
+        <button
+          onClick={() => {
+            dispatch({ type: "logged in" });
+            setUserType(sessionStorage.getItem("userType"));
+          }}
+        >
+          log in
+        </button>
         <button onClick={() => dispatch({ type: "logged out" })}>
           log out
         </button>

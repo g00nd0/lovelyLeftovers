@@ -141,11 +141,7 @@ router.put("/addtorlist", (req, res) => {
 router.put("/addtoclist", (req, res) => {
   User.findByIdAndUpdate(
     req.body.userID, // alternative:  (req.session.currentUser)._id or req.params.id
-<<<<<<< HEAD
-    { $push: { contributionList: req.body.batchID } }, // req.body, // what to update:
-=======
     { $push: { contributedList: req.body.batchID } }, // req.body, // what to update:
->>>>>>> 795d88ce860e4e5d8648ac9cf864653bbb0e701b
     { upsert: true, new: true },
     (error, updatedUser) => {
       if (error) {
