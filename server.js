@@ -5,8 +5,8 @@ const express = require("express");
 const methodOverride = require("method-override");
 const app = express();
 // const MONGODB_URI="mongodb+srv://sei-26-lll-user-00:JD78CpLePbhgh4X@lovelyleftovers-sg.whj60.mongodb.net/lovely?retryWrites=true&w=majority";
-// var MONGODB_URI =
-//   "mongodb+srv://sei-26-lll-user-00:JD78CpLePbhgh4X@lovelyleftovers-sg.whj60.mongodb.net/lovely?retryWrites=true&w=majority";
+var MONGODB_URI =
+  "mongodb+srv://sei-26-lll-user-00:JD78CpLePbhgh4X@lovelyleftovers-sg.whj60.mongodb.net/lovely?retryWrites=true&w=majority";
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
