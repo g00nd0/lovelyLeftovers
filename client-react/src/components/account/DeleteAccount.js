@@ -1,21 +1,41 @@
-import { useParams, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { Redirect, useParams } from 'react-router-dom'
 
-const DeleteAccount = () => {
-    const userId = useParams().id
+const DeleteAccount = (props) => {
+    const userId = sessionStorage.getItem('userId')
+    const [userDeleted, setUserDeleted] = useState(false)
+
+    const userIdParam = useParams().id
 
     useEffect(() => {
-        axios.delete(`/user/${userId}`)
-            .then((response) => {
-                console.log(response)
-            })
-            .catch((error) => {
-                console.log('error', error)
-            })
+        if (userId === userIdParam) {
+            axios.put(`/user/${userId}`, { status: "Inactive" })
+                .then((response) => {
+                    console.log("deactivated user")
+                    sessionStorage.clear()
+                    setTimeout(() => {
+                        setUserDeleted(true)
+                        props.setLoggedIn(false)
+                    }, 2000)
+                })
+                .catch((error) => {
+                    console.log('error', error)
+                })
+        }
     }, [])
 
+    if (userDeleted) {
+        return <Redirect to={'/about'} />
+    }
+
     return (
-        <p>You account has been deleted.</p>
+        <>
+            {userId === userIdParam ?
+                <p> We are deleting your account. You will be redirected once done.</p>
+                :
+                <Redirect to={'/restricted'} />}
+        </>
     )
 }
 

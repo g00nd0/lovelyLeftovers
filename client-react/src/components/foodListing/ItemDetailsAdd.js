@@ -7,20 +7,53 @@ import {
   Row,
   Col,
   Container,
+  InputGroup,
 } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
-// import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import "./style.css";
 
-const ItemDetailsAdd = ({ foodData }) => {
-  //   const handleCreateUser = (event) => {
-  //     event.preventDefault();
-  //     axios.post("/users", formData).then((response) => {
-  //       console.log("response", response);
-  //       setCreated(true);
-  //     });
-  //   };
+const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
+  const [foodDetails, setFoodDetails] = useState(foodList[foodIndex]);
+  const [selectedCat, setSelectedCat] = useState([]);
+  const newFoodList = foodList.splice(foodIndex, 1, foodDetails);
+  const foodCat = [
+    "Meat",
+    "Seafood",
+    "Fruits",
+    "Vegetables",
+    "Carbs",
+    "Snack",
+    "Dairy & Eggs",
+    "Canned food",
+    "Dessert",
+    "Drinks",
+    "Frozen",
+    "Chilled",
+  ];
+  const renderFoodCat = foodCat.map((foodItem) => {
+    return (
+      <Form.Check inline type="checkbox" label={foodItem} value={foodItem} />
+    );
+  });
+  const toBoolean = (inputString) => {
+    if (inputString === "Yes") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const units = ["g", "kg", "ml", "L"];
+  const renderUnit = units.map((indivUnit) => {
+    return (
+      <Form.Check
+        inline
+        type="radio"
+        label={indivUnit}
+        value={indivUnit}
+        name="radioGroup"
+      />
+    );
+  });
 
   return (
     <Container>
@@ -30,11 +63,11 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="text"
             title="title"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, title: event.target.value };
+              });
+            }}
           />
         </Col>
       </Row>
@@ -45,27 +78,70 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="number"
             title="quantity"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, quantity: event.target.value };
+              });
+            }}
           />
         </Col>
       </Row>
 
       <Row>
         <Col>
-          Category:{" "}
+          Est. weight per item:{" "}
           <FormControl
-            type="text"
-            title="category"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            type="number"
+            title="weight"
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, weight: event.target.value };
+              });
+            }}
           />
+        </Col>
+        <Col>
+          Unit:{" "}
+          <Form.Group
+            title="unit"
+            onChange={(event) => {
+              let selectedUnit = "";
+              if (event.target.checked) {
+                selectedUnit = event.target.checked;
+              }
+              setFoodDetails((state) => {
+                return { ...state, unit: event.target.value };
+              });
+            }}
+          >
+            {renderUnit}
+          </Form.Group>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          Category:
+          <Form.Group
+            title="category"
+            onChange={(event) => {
+              const newList = selectedCat;
+              if (event.target.checked) {
+                newList.push(event.target.value);
+              } else {
+                newList.splice(newList.indexOf(event.target.value), 1);
+              }
+              setSelectedCat(newList);
+              setFoodDetails((state) => {
+                return {
+                  ...state,
+                  category: selectedCat,
+                };
+              });
+            }}
+          >
+            {renderFoodCat}
+          </Form.Group>
         </Col>
       </Row>
 
@@ -75,12 +151,17 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="boolean"
             title="isHalal"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
-          />
+            as="select"
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, isHalal: toBoolean(event.target.value) };
+              });
+            }}
+          >
+            <option>(Select One Below)</option>
+            <option>Yes</option>
+            <option>No</option>
+          </FormControl>
         </Col>
       </Row>
 
@@ -90,12 +171,20 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="boolean"
             title="isVegetarian"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
-          />
+            as="select"
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return {
+                  ...state,
+                  isVegetarian: toBoolean(event.target.value),
+                };
+              });
+            }}
+          >
+            <option>(Select One Below)</option>
+            <option>Yes</option>
+            <option>No</option>
+          </FormControl>
         </Col>
       </Row>
 
@@ -105,73 +194,51 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="text"
             title="description"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, description: event.target.value };
+              });
+            }}
           />
         </Col>
       </Row>
 
       <Row>
         <Col>
-          Best Before Date:{" "}
+          Best Before Date: (Format: "DD/MM/YYYY")
           <FormControl
-            type="text"
+            type="date"
             title="bestBefore"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                const formattedDate = new Date(
+                  Date.parse(event.target.value)
+                ).toLocaleDateString("en-SG");
+                return { ...state, bestBefore: formattedDate }; //returning as a string
+              });
+            }}
           />
         </Col>
       </Row>
 
       <Row>
+        <Col></Col>
+        {/* <Col></Col> this is for testing
+        <Col></Col>
+        <Col></Col>
         <Col>
-          Collection Address:{" "}
-          <FormControl
-            type="text"
-            title="collectionAddress"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
-          />
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
-          Contact Person:{" "}
-          <FormControl
-            type="text"
-            title="contactName"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
-          />
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
-          Contact Number:{" "}
-          <FormControl
-            type="number"
-            title="contactNumber"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
-          />
-        </Col>
+          <Button
+            type="button"
+            onClick={() => {
+              console.log("Saved");
+              console.log(foodDetails);
+              console.log(foodList);
+            }}
+            style={{ margin: "10px 0" }}
+          >
+            Save
+          </Button>
+        </Col> */}
       </Row>
     </Container>
   );

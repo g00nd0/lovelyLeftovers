@@ -1,20 +1,23 @@
-import { useState } from "react";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Logout = () => {
-    const [loggedOut, setLoggedOut] = useState(false)
+const Logout = (props) => {
     axios.delete('/session')
         .then((response) => {
-            setLoggedOut(true)
+            sessionStorage.clear()
             console.log(response)
+        }).then(() => {
+            props.setLoggedIn(false)
         })
         .catch((error) => {
             console.log(error)
         })
 
     return (
-        <h1>{loggedOut ? "Logged Out" : "Logout fail"}</h1>
+        <>
+            {!props.loggedIn ? <Redirect to={'/about'} /> : <h1>"Logging out"</h1>}
+        </>
     );
 };
 
