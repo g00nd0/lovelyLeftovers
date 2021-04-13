@@ -58,7 +58,11 @@ function App() {
             {userId ? <PasswordEdit /> : <Redirect to={"/login"} />}
           </Route>
           <Route exact path="/user/:id/delete">
-            {userId ? <DeleteAccount setLoggedIn={setLoggedIn} /> : <Redirect to={"/login"} />}
+            {userId ? (
+              <DeleteAccount setLoggedIn={setLoggedIn} />
+            ) : (
+              <Redirect to={"/login"} />
+            )}
           </Route>
           <Route exact path="/about">
             <About />

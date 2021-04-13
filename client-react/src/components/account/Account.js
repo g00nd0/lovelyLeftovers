@@ -16,7 +16,6 @@ const Account = () => {
       .get(`/user/${userId}`)
       .then((response) => {
         setFormData(response.data);
-        console.log(response);
       })
       .catch((error) => {
         console.log("error", error);
@@ -132,8 +131,8 @@ const Account = () => {
           </div>
         </div>
       ) : (
-          <Redirect to={"/about"} />
-        )}
+        <Redirect to={"/about"} />
+      )}
     </div>
   );
 };
