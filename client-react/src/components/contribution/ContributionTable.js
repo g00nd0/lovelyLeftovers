@@ -11,7 +11,6 @@ const ContributionTable = () => {
   const userId = sessionStorage.getItem("userId");
 
   const handleHide = (batch) => {
-    console.log("handling Hide");
     axios
       .put("/batch/sdeletebatch", {
         batchID: batch,
@@ -20,10 +19,8 @@ const ContributionTable = () => {
         console.log("Item Hidden", response);
       })
       .catch((error) => {
-        console.log("error", error);
         console.log("error response", error.response.data.error);
       });
-    console.log("after axios");
   };
 
   useEffect(() => {
@@ -33,9 +30,6 @@ const ContributionTable = () => {
         contributedList.map((contributedId) => {
           batchResponse.data.map((batch) => {
             if (contributedId === batch._id) {
-              console.log(contributedId);
-              console.log(batch._id);
-              console.log(batch);
               const newList = tableData;
               newList.push(batch);
               setTableData(newList);
