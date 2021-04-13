@@ -18,7 +18,6 @@ const OneItem = () => {
   useEffect(() => {
     axios.get(`/batch/${batchId}`).then((response) => {
       const batchData = response.data;
-      console.log("batchData reponse.data", batchData);
       batchData.foodListings.forEach((foodItem) => {
         if (foodItem._id === foodId) {
           setFoodDetails(foodItem);
@@ -30,7 +29,6 @@ const OneItem = () => {
   }, []);
 
   const handleCollect = () => {
-    console.log("handling collect Click");
     axios
       .put("/user/collections/new", {
         batchID: batchId,
@@ -38,7 +36,6 @@ const OneItem = () => {
         userID: userId,
       })
       .then((response) => {
-        // response is updatedUser
         delete response.data.password;
         console.log(
           "collected! response is User Doc without password ",
@@ -47,10 +44,8 @@ const OneItem = () => {
         setIsCollected(true);
       })
       .catch((error) => {
-        console.log("error", error);
         console.log("error response", error.response.data.error);
       });
-    console.log("after axios");
   };
 
   if (isCollected === true) {
@@ -91,7 +86,6 @@ const OneItem = () => {
 
           <Col>
             <Button
-              // href={linkToggle(userType)}
               onClick={() => history.goBack()}
               style={{
                 margin: "10px 0",
