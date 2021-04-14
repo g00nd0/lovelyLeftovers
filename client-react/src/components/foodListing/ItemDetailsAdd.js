@@ -1,14 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import {
-  Form,
-  FormControl,
-  Button,
-  Row,
-  Col,
-  Container,
-  InputGroup,
-} from "react-bootstrap";
+import { Form, FormControl, Row, Col, Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {

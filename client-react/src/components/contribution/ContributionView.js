@@ -18,7 +18,6 @@ const ContributionTable = () => {
   }, [dataLoaded]);
 
   const handleHide = (id) => {
-    console.log("handling Hide");
     axios
       .put("/batch/sdeletelist", {
         batchID: batchId,
@@ -28,10 +27,8 @@ const ContributionTable = () => {
         console.log("Item Hidden", response);
       })
       .catch((error) => {
-        console.log("error", error);
         console.log("error response", error.response.data.error);
       });
-    console.log("after axios");
   };
 
   return (

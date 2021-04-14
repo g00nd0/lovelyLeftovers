@@ -26,7 +26,6 @@ const FoodListing = () => {
         imgFile: foodItem.imgFile,
         queryPath: "/" + batch._id + "/" + foodItem._id,
       };
-      console.log("foodData", foodData);
       return <FoodCard foodData={foodData} />;
     });
   });

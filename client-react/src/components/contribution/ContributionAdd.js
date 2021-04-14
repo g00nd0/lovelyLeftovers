@@ -64,7 +64,6 @@ const ContributionAdd = () => {
     event.preventDefault();
     axios.post("/batch", batchDetails).then((response) => {
       setBatchCreated(true);
-      console.log(response);
       const contributionData = { userID: userId, batchID: response.data._id };
       axios
         .put("/user/contributions/new", contributionData)
@@ -106,7 +105,6 @@ const ContributionAdd = () => {
     console.log("item added");
   };
   const handleRemoveItem = (index) => {
-    console.log("item removed");
     const list = [...inputFoodArray];
     list.pop();
     setInputFoodArray(list);
