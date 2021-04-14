@@ -3,11 +3,9 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const Batch = require("../models/batch");
-// const foodCat = require("../dataDump/dataDump");
 const moment = require("moment");
 const { isDate } = require("moment");
 const User = require("../models/user");
-// const { batchFind } = require("../functions/mongooseFn");
 const foodCat = [
   "Meat",
   "Seafood",
@@ -145,7 +143,6 @@ router.get("/:batchID", async (req, res) => {
 
 router.post(
   "/",
-  // body("foodListings", "Please enter food items").notEmpty(),
   body("contactPerson").trim().optional(),
   body("contactNum", "Please enter only digits").trim().optional(),
   body("collectionAddress").trim().optional(),
@@ -165,10 +162,6 @@ router.post(
   body("foodListings.*.category", "Please select at least one entry").isArray({
     min: 1,
   }),
-  // body(
-  //   "foodListings.*.category.*",
-  //   "Only categories provided are considered valid entries"
-  // ).isIn(foodCat),
   body("foodListings.*.isHalal", "Please pick an option for halal")
     .notEmpty()
     .isBoolean(),
@@ -179,8 +172,6 @@ router.post(
   body("foodListings.*.bestBefore", "Please enter a valid date/time").isDate(
     "DD/MM/YYYY"
   ),
-  // .isAfter()
-  // .withMessage("Please enter a date later than today"),
   body("foodListings.*.imgFile").optional(),
 
   (req, res) => {
@@ -190,7 +181,6 @@ router.post(
       res.status(StatusCodes.BAD_REQUEST).send(locals);
     } else {
       const newContribution = req.body;
-      console.log(newContribution);
       Batch.create(newContribution, (error, data) => {
         res.status(StatusCodes.CREATED).send(data);
       });
@@ -200,7 +190,6 @@ router.post(
 
 router.delete("/deletebatch", (req, res) => {
   const _id = req.body.id;
-  console.log(_id);
   Batch.findByIdAndDelete(_id, (err, data) => {
     if (err) return res.status(500).send(err);
     res.send(data);
@@ -289,7 +278,6 @@ router.put(
   body("foodListings.*.weight", "Please enter weight").isInt({ gt: 0 }),
   body("foodListings.*.unit", "Please select a unit").trim().notEmpty(),
   body("category", "pick at least one category").notEmpty(), //test test
-  // body("category.*", "category not valid").isIn(foodCat),
   body("isHalal", "input must be true or false").isBoolean(),
   body("isVegetarian", "input must be true or false").isBoolean(),
   body("bestBefore", "Enter valid dateformat dd/mm/yyyy")
